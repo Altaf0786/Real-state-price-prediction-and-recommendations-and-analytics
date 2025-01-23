@@ -2,7 +2,7 @@ from os import pipe
 import pandas as pd
 import ast
 import re
-
+from sklearn.model_selection import train_test_split
 from pathlib import Path
 
 
@@ -301,12 +301,22 @@ def preprocess_data(df):
 
             .reindex(columns=columns_order, fill_value=None)
             .rename(columns=lambda x: x.upper())
-            .drop(columns=['AMENITY_LUXURYS']))
+            .drop(columns=['AMENITY_LUXURYS'])
+            .assign(PREFERENCE=lambda x: x['PREFERENCE'].replace({'Sale': 1})))
 
 
     return df
 
+def split_data(data: pd.DataFrame, test_size: float, random_state: int):
+    train_data, test_data = train_test_split(data, 
+                                             test_size=test_size, 
+                                             random_state=random_state)
+    
+    return train_data, test_data
 
+    
+   
+    
 if __name__ == "__main__":
     root_path = Path(__file__).parent.parent.parent
 
@@ -316,7 +326,13 @@ if __name__ == "__main__":
    
     cleaned_data_filename = root_path / "data" / "cleaned" / "House_cleaned.csv"
     cleaned_data_filename.parent.mkdir(parents=True, exist_ok=True)  # Create the directory if it doesn't exist
-
     save_data(df, cleaned_data_filename)
+    
+    
+    train,test =split_data(df, 0.2, 42)
+    train_filename = root_path / "data" / "processed" / "train.csv"
+    test_filename = root_path / "data" / "processed" / "test.csv"
+    save_data(train, train_filename)
+    save_data(test, test_filename)
     
 

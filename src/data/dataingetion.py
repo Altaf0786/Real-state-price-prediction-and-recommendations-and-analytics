@@ -4,6 +4,7 @@ import sys
 import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
 from helpercode.data_ingetion import DataIngestorFactory, ZipDataIngestor, CSVDataIngestor, ExcelDataIngestor, JSONDataIngestor
+from sklearn.model_selection import train_test_split
 # Ensure the log directory exists using pathlib
 
 # Setup logging
@@ -25,6 +26,15 @@ file_handler.setLevel(logging.DEBUG)  # Set the level for file output
 file_formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')  # Include name in the format
 file_handler.setFormatter(file_formatter)
 logger.addHandler(file_handler)
+
+
+
+def split_data(data: pd.DataFrame, test_size: float, random_state: int):
+    train_data, test_data = train_test_split(data, 
+                                             test_size=test_size, 
+                                             random_state=random_state)
+    
+    return train_data, test_data
 
 # Example usage
 if __name__ == "__main__":
