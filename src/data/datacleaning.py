@@ -302,7 +302,7 @@ def preprocess_data(df):
             .reindex(columns=columns_order, fill_value=None)
             .rename(columns=lambda x: x.upper())
             .drop(columns=['AMENITY_LUXURYS'])
-            .assign(PREFERENCE=lambda x: x['PREFERENCE'].replace({'Sale': 1})))
+            .assign(PREFERENCE=lambda x: x['PREFERENCE'].replace({'Sale':1})))
 
 
     return df
@@ -330,8 +330,8 @@ if __name__ == "__main__":
     
     
     train,test =split_data(df, 0.2, 42)
-    train_filename = root_path / "data" / "processed" / "train.csv"
-    test_filename = root_path / "data" / "processed" / "test.csv"
+    train_filename = root_path / "data" / "interim" / "train.csv"
+    test_filename = root_path / "data" / "interim" / "test.csv"
     save_data(train, train_filename)
     save_data(test, test_filename)
     

@@ -77,11 +77,8 @@ def main():
     test_df_imputed = missing_value_handler.handle_missing_values(test_df, columns=['PRICE', 'PRICE_SQFT','TRANSACT_TYPE', 'TOTAL_FLOOR','TOTAL_LANDMARK_COUNT','BEDROOM_NUM','BALCONY_NUM'])
     
 
-
-
-   
+    """Handle outlier  values using a specified strategy for selected columns."""
     
-    """Handle missing values using a specified strategy for selected columns."""
     df_numeric_train = df_train_imputed.select_dtypes(include=[np.number]).dropna()
     df_numeric_test = test_df_imputed.select_dtypes(include=[np.number]).dropna()
 
@@ -96,37 +93,35 @@ def main():
     for column in df_numeric_test.columns:
         # Handle outliers for each column and update the original DataFrame
        test_df_imputed[column] = outlier_detector.handle_outliers(df_numeric_test[column], method="zscore")    
-
-    #multivariate outlier treatement
-    # Select numeric columns for outlier detection
-    df_numeric_train =df_train_imputed.select_dtypes(include=[np.number]).dropna()
-    numerical_columns = df_numeric_train.columns.tolist()
+   # multivariate outlier treatement 
+    df_numeric =df_train_imputed.select_dtypes(include=[np.number]).dropna()
+    numerical_columns = df_numeric.columns.tolist()
+    df_numeric =test_df_imputed.select_dtypes(include=[np.number]).dropna()
+    numerical_columns = df_numeric.columns.tolist()
     # Example: Apply One-Class SVM strategy to detect outliers
     svm_strategy = OneClassSVMStrategy()
     outlier_detector_svm = OutlierDetection(strategy=svm_strategy, df=df_train_imputed, numerical_columns=numerical_columns)
-
+    
     # Detect outliers with One-Class SVM
-    df_train_with_outliers_svm = outlier_detector_svm.detect_outliers(nu=0.1)
+    df_with_outliers_svm = outlier_detector_svm.detect_outliers(nu=0.1)
 
     # Handle and visualize One-Class SVM method-wise:
-    df_train_no_outliers_svm = outlier_detector_svm.handle_outliers(method='remove', outlier_column='Outlier_SVM')
-    
-    df_numeric_test=test_df_imputed.select_dtypes(include=[np.number]).dropna()
-    numerical_columns = df_numeric_test.columns.tolist()
-    # Example: Apply One-Class SVM strategy to detect outliers
+    df_train = outlier_detector_svm.handle_outliers(method='remove', outlier_column='Outlier_SVM')
     
     outlier_detector_svm = OutlierDetection(strategy=svm_strategy, df=test_df_imputed, numerical_columns=numerical_columns)
-    df_test_with_outliers_svm = outlier_detector_svm.detect_outliers(nu=0.1)
-    df_test_no_outliers_svm = outlier_detector_svm.handle_outliers(method='remove', outlier_column='Outlier_SVM')
     
-    
+    # Detect outliers with One-Class SVM
+    df_with_outliers_svm = outlier_detector_svm.detect_outliers(nu=0.1)
 
+    # Handle and visualize One-Class SVM method-wise:
+    df_test = outlier_detector_svm.handle_outliers(method='remove', outlier_column='Outlier_SVM')
+    
     # Create context with the chosen strategy
     encoding_strategy=OneHotEncoding(features = ['PROP_HEADING','CITY'])
     context =Feature_Engineering(strategy=encoding_strategy)
 
-    df_train_processed = context.apply_transformation(df_train_no_outliers_svm )# Define custom mappings for each feature
-    df_test_processed = context.apply_transformation(df_test_no_outliers_svm)# Define custom mappings for each feature
+    df_train_processed = context.apply_transformation(df_train )# Define custom mappings for each feature
+    df_test_processed = context.apply_transformation(df_test)# Define custom mappings for each feature
     
     # Define categorical features
     categorical_features = ['AGE', 'FLOOR_NUM', 'FURNISH', 'PREFERENCE', 'AMENITY_LUXURY', 'FEATURES_LUXURY']
@@ -149,7 +144,7 @@ def main():
 
     # Apply the transformation
     df_train_processed1 = context.apply_transformation(df_train_processed )
-    df_test_processed1 = context.apply_transformation(df_train_processed )
+    df_test_processed1 = context.apply_transformation(df_test_processed)
     save(df_train_processed1,root_path/'data'/'processed'/'train_processed.csv')
     save(df_test_processed1,root_path/'data'/'processed'/'test_processed.csv')
 
