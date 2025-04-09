@@ -99,3 +99,4 @@ target/
 *.dvc.lock
 *.dvc.tmp
 models/models/*.joblib
+models/*.joblib
