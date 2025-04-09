@@ -1,0 +1,4 @@
+model:
+  type: rf
+  n_estimators: 200
+  random_state: 42

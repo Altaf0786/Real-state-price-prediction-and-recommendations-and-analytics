@@ -323,16 +323,16 @@ if __name__ == "__main__":
     file_path = root_path / "data" / "raw" / "House_data.csv"
     df = load_data(file_path)
     df = preprocess_data(df)
-   
+
     cleaned_data_filename = root_path / "data" / "cleaned" / "House_cleaned.csv"
-    cleaned_data_filename.parent.mkdir(parents=True, exist_ok=True)  # Create the directory if it doesn't exist
+    cleaned_data_filename.parent.mkdir(parents=True, exist_ok=True)  # ✅ create cleaned/
     save_data(df, cleaned_data_filename)
-    
-    
-    train,test =split_data(df, 0.2, 42)
+
+    train, test = split_data(df, 0.2, 42)
     train_filename = root_path / "data" / "interim" / "train.csv"
     test_filename = root_path / "data" / "interim" / "test.csv"
+    
+    train_filename.parent.mkdir(parents=True, exist_ok=True)  # ✅ create interim/
+
     save_data(train, train_filename)
     save_data(test, test_filename)
-    
-

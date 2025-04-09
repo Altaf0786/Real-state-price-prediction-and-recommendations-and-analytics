@@ -2,7 +2,13 @@ import logging
 from pathlib import Path
 import sys
 import os
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
+
+import pandas as pd
+root_path = Path(__file__).resolve().parent.parent.parent
+
+# Add root path to sys.path if not already present
+if str(root_path) not in sys.path:
+    sys.path.insert(0, str(root_path))
 from helpercode.data_ingetion import DataIngestorFactory, ZipDataIngestor, CSVDataIngestor, ExcelDataIngestor, JSONDataIngestor
 from sklearn.model_selection import train_test_split
 # Ensure the log directory exists using pathlib
@@ -10,8 +16,7 @@ from sklearn.model_selection import train_test_split
 # Setup logging
 logger = logging.getLogger("DataIngestorApp")  # Using a specific logger name
 logger.setLevel(logging.DEBUG)
-# creat root path 
-root_path = Path(__file__).parent.parent.parent
+
 
 # Console Handler (for output to console)
 console_handler = logging.StreamHandler()
@@ -42,9 +47,9 @@ if __name__ == "__main__":
         logger.info('dataingetion start')
         # Update this path to point to your file
         
-        file_path = Path("/Users/mdaltafshekh/Downloads/House_data.csv") 
+        #file_path = Path("/Users/mdaltafshekh/Downloads/House_data.csv") 
         # Input file path
-        file_path = Path("/Users/mdaltafshekh/Downloads/House_data.csv")
+        file_path = Path("/Users/mdaltafshekh/Desktop/House_data.csv")
 
         # Output path dynamically created using root_path
         output_dir = root_path / "data" / "raw"

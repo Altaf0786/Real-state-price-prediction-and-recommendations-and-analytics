@@ -1,0 +1,23 @@
+stages:
+  dataingetion:
+    cmd: python3 src/data/dataingetion.py
+    deps:
+    - src/data/dataingetion.py
+    outs:
+    - data/raw
+
+  datacleaning:
+    cmd: python3 src/data/datacleaning.py
+    deps:
+    - data/raw
+    - src/data/datacleaning.py
+    outs:
+    - data/cleaned
+    - data/interim
+  featureeng:
+    cmd: python3 src/features/featureeng.py
+    deps:
+    - data/interim
+    - src/features/featureeng.py
+    outs:
+    - data/processed

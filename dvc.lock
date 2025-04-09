@@ -1,0 +1,71 @@
+schema: '2.0'
+stages:
+  data_ingestion:
+    cmd: 
+      /Users/mdaltafshekh/real-state-price-prediction-and-recommendations-and-analytics/venv/bin/python3
+      src/data/dataingetion.py
+    deps:
+    - path: src/data/dataingetion.py
+      hash: md5
+      md5: 9b5785d6a6cf97bdbd10dc83bcddad26
+      size: 2795
+    outs:
+    - path: data/raw
+      hash: md5
+      md5: d0f147b897b5ad36c2f9025182189cf6.dir
+      size: 64960072
+      nfiles: 1
+  dataingetion:
+    cmd: python3 src/data/dataingetion.py
+    deps:
+    - path: src/data/dataingetion.py
+      hash: md5
+      md5: 9b5785d6a6cf97bdbd10dc83bcddad26
+      size: 2795
+    outs:
+    - path: data/raw
+      hash: md5
+      md5: d0f147b897b5ad36c2f9025182189cf6.dir
+      size: 64960072
+      nfiles: 1
+  datacleaning:
+    cmd: python3 src/data/datacleaning.py
+    deps:
+    - path: data/raw
+      hash: md5
+      md5: d0f147b897b5ad36c2f9025182189cf6.dir
+      size: 64960072
+      nfiles: 1
+    - path: src/data/datacleaning.py
+      hash: md5
+      md5: 5a427d807690e363a6846a4bd4781247
+      size: 13070
+    outs:
+    - path: data/cleaned
+      hash: md5
+      md5: 1f278c171a873d85fc8e5415e1ec8f43.dir
+      size: 7123347
+      nfiles: 1
+    - path: data/interim
+      hash: md5
+      md5: 309c8c5e318ee04f2500104628dcc0c7.dir
+      size: 7123757
+      nfiles: 2
+  featureeng:
+    cmd: python3 src/features/featureeng.py
+    deps:
+    - path: data/interim
+      hash: md5
+      md5: 309c8c5e318ee04f2500104628dcc0c7.dir
+      size: 7123757
+      nfiles: 2
+    - path: src/features/featureeng.py
+      hash: md5
+      md5: ee98f0d70f5a75244d145697674d3306
+      size: 7751
+    outs:
+    - path: data/processed
+      hash: md5
+      md5: 614d2958d44615fc606384b294de3e16.dir
+      size: 6036557
+      nfiles: 2

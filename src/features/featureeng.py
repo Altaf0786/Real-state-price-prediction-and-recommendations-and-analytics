@@ -142,11 +142,19 @@ def main():
     # Create context with the encoding strategy
     context = Feature_Engineering(strategy=ordinal_encoding)
 
+    # Ensure the processed directory exists
+    processed_dir = root_path / 'data' / 'processed'
+    processed_dir.mkdir(parents=True, exist_ok=True)
+    logger.debug(f"Ensured the processed directory exists at: {processed_dir}")
+
     # Apply the transformation
-    df_train_processed1 = context.apply_transformation(df_train_processed )
+    df_train_processed1 = context.apply_transformation(df_train_processed)
     df_test_processed1 = context.apply_transformation(df_test_processed)
-    save(df_train_processed1,root_path/'data'/'processed'/'train_processed.csv')
-    save(df_test_processed1,root_path/'data'/'processed'/'test_processed.csv')
+
+    # Save the processed data
+    save(df_train_processed1, processed_dir / 'train_processed.csv')
+    save(df_test_processed1, processed_dir / 'test_processed.csv')
+
 
    
 
