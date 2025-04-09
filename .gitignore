@@ -88,3 +88,13 @@ target/
 
 # Mypy cache
 .mypy_cache/
+
+ # DVC local-only config (keep credentials out of Git)
+.dvc/config.local
+
+# DVC local cache (if configured locally)
+.dvc_cache/
+
+# DVC lock and temp files
+*.dvc.lock
+*.dvc.tmp
