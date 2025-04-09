@@ -1,4 +1,21 @@
-model:
-  type: rf
-  n_estimators: 200
-  random_state: 42
+models:
+  - name: linear
+
+  - name: transformreg
+    experiments:
+      - base_model: rf
+      - base_model: voting
+        models: [rf, gradreg, xgboostreg]
+      - base_model: stacking
+        models: [rf, gradreg]
+        final_estimator: linear
+
+  - name: voting
+    models: [rf, xgboostreg, gradreg]
+
+  - name: stacking
+    models: [rf, gradreg]
+    final_estimator: ridge
+
+evaluation:
+  model_name: transformreg_rf_0_model.joblib
