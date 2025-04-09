@@ -25,6 +25,8 @@ var/
 *.egg
 
 # PyInstaller
+#  Usually these files are written by a python script from a template
+#  before PyInstaller builds the exe, so as to inject date/other infos into it.
 *.manifest
 *.spec
 
@@ -74,6 +76,9 @@ target/
 # Jupyter NB Checkpoints
 .ipynb_checkpoints/
 
+# exclude data from source control by default
+/data/
+
 # Mac OS-specific storage files
 .DS_Store
 
@@ -84,11 +89,7 @@ target/
 # Mypy cache
 .mypy_cache/
 
-# -----------------------------
-# DVC
-# -----------------------------
-
-# DVC local-only config (keep credentials out of Git)
+ # DVC local-only config (keep credentials out of Git)
 .dvc/config.local
 
 # DVC local cache (if configured locally)
@@ -97,41 +98,4 @@ target/
 # DVC lock and temp files
 *.dvc.lock
 *.dvc.tmp
-
-# Ignore raw data & model folders (but track .dvc pointer files)
-data/
-!data/**/*.dvc
-!data/*.dvc
-
-models/
-!models/**/*.dvc
-!models/*.dvc
-models/*.joblib
-models/*.pkl
-# -----------------------------
-# MLflow
-# -----------------------------
-
-mlruns/
-
-# -----------------------------
-# Model Artifacts
-# -----------------------------
-*.joblib
-*.pkl
-*.h5
-*.pt
-*.onnx
-
-# -----------------------------
-# Logs & Outputs
-# -----------------------------
-*.log
-logs/
-evaluation.log
-run_information.json
-
-# -----------------------------
-# Configs to track
-# -----------------------------
-!params.yaml
+models/models/*.joblib
