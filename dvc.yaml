@@ -21,3 +21,20 @@ stages:
     - src/features/featureeng.py
     outs:
     - data/processed
+
+
+  model_building:
+    cmd: python3 src/models/train.py
+    deps:
+    - data/processed
+    - src/models/train.py
+    outs:
+    - models/
+  evaluation:
+    cmd: python3 src/models/evaluation.py
+    deps:
+    - data/processed
+    - models/
+    - src/models/evaluation.py
+    outs:
+    - run_information.json
