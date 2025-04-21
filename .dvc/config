@@ -1,2 +1,4 @@
 [cache]
+    type = "reflink,copy"
+    shared = group
     dir = ../.dvc_cache

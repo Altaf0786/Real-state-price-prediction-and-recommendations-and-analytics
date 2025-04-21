@@ -69,3 +69,54 @@ stages:
       md5: 614d2958d44615fc606384b294de3e16.dir
       size: 6036557
       nfiles: 2
+  model_building:
+    cmd: python3 src/models/train.py
+    deps:
+    - path: data/processed
+      hash: md5
+      md5: 614d2958d44615fc606384b294de3e16.dir
+      size: 6036557
+      nfiles: 2
+    - path: src/models/train.py
+      hash: md5
+      md5: a9a0843c4360856b8a640c5b59a99845
+      size: 9482
+    outs:
+    - path: models/
+      hash: md5
+      md5: 67c3b51323cae065275af702e63ebf38.dir
+      size: 683232740
+      nfiles: 6
+  evaluation:
+    cmd: python3 src/models/evaluation.py
+    deps:
+    - path: data/processed
+      hash: md5
+      md5: 614d2958d44615fc606384b294de3e16.dir
+      size: 6036557
+      nfiles: 2
+    - path: models/
+      hash: md5
+      md5: 67c3b51323cae065275af702e63ebf38.dir
+      size: 683232740
+      nfiles: 6
+    - path: src/models/evaluation.py
+      hash: md5
+      md5: f21c9648f76dec779d0ac501d23e115c
+      size: 6932
+    outs:
+    - path: run_information.json
+      hash: md5
+      md5: 43622e408ae9b1d8fc37473f10c7914f
+      size: 222
+  model_register:
+    cmd: python3 src/models/resister_model.py
+    deps:
+    - path: run_information.json
+      hash: md5
+      md5: 43622e408ae9b1d8fc37473f10c7914f
+      size: 222
+    - path: src/models/resister_model.py
+      hash: md5
+      md5: 91be3b8be9f654effc7205148225b71c
+      size: 3798

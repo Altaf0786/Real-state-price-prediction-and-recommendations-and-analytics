@@ -143,3 +143,5 @@ models/
 data/
 dataset/
 datasets/
+/models
+/run_information.json

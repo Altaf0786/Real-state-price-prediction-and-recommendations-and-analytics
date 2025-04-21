@@ -14,6 +14,7 @@ stages:
     outs:
     - data/cleaned
     - data/interim
+
   featureeng:
     cmd: python3 src/features/featureeng.py
     deps:
@@ -30,6 +31,7 @@ stages:
     - src/models/train.py
     outs:
     - models/
+
   evaluation:
     cmd: python3 src/models/evaluation.py
     deps:
@@ -38,3 +40,8 @@ stages:
     - src/models/evaluation.py
     outs:
     - run_information.json
+  model_register:
+    cmd: python3 src/models/resister_model.py
+    deps:
+    - run_information.json
+    - src/models/resister_model.py
